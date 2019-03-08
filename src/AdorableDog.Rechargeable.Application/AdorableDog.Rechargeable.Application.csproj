@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>AdorableDog.Rechargeable</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdorableDog.Rechargeable.Domain\AdorableDog.Rechargeable.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="0.14.0" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="0.14.0" />
+  </ItemGroup>
+
+</Project>
