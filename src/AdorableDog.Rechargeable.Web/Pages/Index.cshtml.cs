@@ -4,7 +4,8 @@
     {
         public void OnGet()
         {
-            
+            if (CurrentUser.IsAuthenticated)
+                Response.Redirect("/machines/index");
         }
     }
 }

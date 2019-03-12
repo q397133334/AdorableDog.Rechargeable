@@ -1,0 +1,26 @@
+﻿@page
+@inherits AdorableDog.Rechargeable.Pages.RechargeablePageBase
+@using AdorableDog.Rechargeable.Web.Pages.Machines
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model RechargeModalModel
+@{
+    Layout = null;
+}
+<abp-dynamic-form abp-model="MachineRechargeDto" data-ajaxForm="true" asp-page="/Machines/RechargeModal">
+    <abp-modal>
+        <abp-modal-header title="充值"></abp-modal-header>
+        <abp-modal-body>
+            <abp-form-content />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+    <script type="text/javascript">
+        $("#MachineRechargeDto_SerialNumberId").val("");
+        setTimeout(function () {
+            $("#MachineRechargeDto_SerialNumberId").focus();
+        },1000)
+    
+    </script>
+</abp-dynamic-form>
+
+

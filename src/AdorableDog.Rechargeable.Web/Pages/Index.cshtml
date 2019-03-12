@@ -12,8 +12,8 @@
         @if (!CurrentUser.IsAuthenticated)
         {
             <p><a abp-button="Primary" href="/Account/Login"><i class="fa fa-sign-in"></i> @L["Login"]</a></p>
+            <p><a abp-button="Primary" href="/Account/Register"><i class="fa fa-sign-in"></i> @L["Register"]</a></p>
         }
-        <hr/>
-        <p class="text-right"><a href="http://abp.io?ref=tmpl" target="_blank">abp.io</a></p>
+        <hr />
     </abp-card-body>
 </abp-card>

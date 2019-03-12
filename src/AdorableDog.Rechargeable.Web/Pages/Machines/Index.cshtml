@@ -1,0 +1,69 @@
+﻿@page
+@model AdorableDog.Rechargeable.Web.Pages.Machines.IndexModel
+@inherits AdorableDog.Rechargeable.Pages.RechargeablePageBase
+<abp-card>
+    <abp-card-header>
+        <h2>@L["Machines"]</h2>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="MachinesTable">
+            <thead>
+                <tr>
+
+                    <th>@L["名称"]</th>
+                    <th>产品信息</th>
+                    <th>@L["Machine:DriveId"]</th>
+                    <th>@L["信息"]</th>
+                    <th>@L["在线时间"]</th>
+                    <th>@L["到期时间"]</th>
+                    <th width="100px">操作</th>
+                </tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+
+            var rechargeModal = new abp.ModalManager(abp.appPath + 'Machines/RechargeModal');
+
+            var dataTable = $('#MachinesTable').DataTable(abp.libs.datatables.normalizeConfiguration({
+                ajax: abp.libs.datatables.createAjax(adorableDog.rechargeable.machines.machine.getMachines),
+                processing: true,
+                serverSide: true,
+                paging: true,
+                searching: false,
+                autoWidth: false,
+                scrollCollapse: true,
+                order: [[1, "asc"]],
+                columnDefs: [
+                    { data: "name" },
+                    { data:"productName"},
+                    { data: "driveId" },
+                    { data: "desc" },
+                    { data: "lastOnlineTime" },
+                    { data: "expireTime" },
+                    {
+                        rowAction: {
+                            items:
+                                [
+                                    {
+                                        text: "充值",
+                                        action: function (data) {
+                                            rechargeModal.open({ MachineId: data.record.id });
+                                        }
+                                    }
+                                ]
+                        }
+                    
+                    }
+                ]
+            }));
+
+            rechargeModal.onResult(function () {
+                dataTable.ajax.reload();
+            });
+        });
+    </script>
+}

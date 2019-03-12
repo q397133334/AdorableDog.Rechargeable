@@ -18,4 +18,10 @@
     <EmbeddedResource Include="Localization\Rechargeable\*.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Localization\Rechargeable\zh-Hans.json~RF60b01d0.TMP" />
+    <None Remove="Localization\Rechargeable\zh-Hans.json~RF6295463.TMP" />
+    <None Remove="Localization\Rechargeable\zh-Hans.json~RF63ad40f.TMP" />
+  </ItemGroup>
+
 </Project>

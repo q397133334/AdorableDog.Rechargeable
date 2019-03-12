@@ -32,10 +32,12 @@ namespace AdorableDog.Rechargeable
             Configure<AbpLocalizationOptions>(options =>
             {
                 options.Resources
-                    .Add<RechargeableResource>("en")
+                    .Add<RechargeableResource>("zh-Hans")
                     .AddBaseTypes(typeof(AbpValidationResource))
                     .AddVirtualJson("/Localization/Rechargeable");
             });
+
+
 
             Configure<SettingOptions>(options =>
             {

@@ -6,9 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Machines\IMachineAppService.cs~RF5e7776c.TMP" />
+    <None Remove="Products\IProductAppService.cs~RF5ac099e.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AdorableDog.Rechargeable.Domain\AdorableDog.Rechargeable.Domain.csproj" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="0.14.0" />
     <PackageReference Include="Volo.Abp.Identity.Application" Version="0.14.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="0.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Identity">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.identity\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Identity.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

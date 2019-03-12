@@ -1,37 +1,35 @@
-﻿using System.IO;
-using System.Linq;
+﻿using AdorableDog.Rechargeable.EntityFrameworkCore;
+using AdorableDog.Rechargeable.Localization.Rechargeable;
+using AdorableDog.Rechargeable.Menus;
+using AdorableDog.Rechargeable.Permissions;
 using Localization.Resources.AbpUi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using AdorableDog.Rechargeable.EntityFrameworkCore;
-using AdorableDog.Rechargeable.Localization.Rechargeable;
-using AdorableDog.Rechargeable.Menus;
-using AdorableDog.Rechargeable.Permissions;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
+using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
+using Volo.Abp.Account.Web.Localization;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.Localization;
-using Volo.Abp.AspNetCore.Mvc.UI;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
+using Volo.Abp.AspNetCore.Mvc.UI.Theming;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.Web;
 using Volo.Abp.Localization;
 using Volo.Abp.Localization.Resources.AbpValidation;
 using Volo.Abp.Modularity;
-using Volo.Abp.PermissionManagement.Web;
+using Volo.Abp.PermissionManagement;
 using Volo.Abp.Threading;
-using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
-using Volo.Abp.PermissionManagement;
-using Volo.Abp.EntityFrameworkCore;
 
 namespace AdorableDog.Rechargeable
 {
@@ -70,6 +68,16 @@ namespace AdorableDog.Rechargeable
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
+            ConfigureTheme(context.Services);
+
+            context.Services.AddAbpIdentity(option =>
+            {
+                option.Password.RequireDigit = false;
+                option.Password.RequiredLength = 3;
+                option.Password.RequiredUniqueChars = 0;
+                option.Password.RequireNonAlphanumeric = false;
+                option.Password.RequireUppercase = false;
+            });
         }
 
         private void ConfigureDatabaseServices()
@@ -97,6 +105,27 @@ namespace AdorableDog.Rechargeable
                     options.FileSets.ReplaceEmbeddedByPhysical<RechargeableDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}AdorableDog.Rechargeable.Domain", Path.DirectorySeparatorChar)));
                 });
             }
+
+            if (hostingEnvironment.IsDevelopment())
+            {
+                Configure<VirtualFileSystemOptions>(options =>
+                {
+                    options.FileSets.ReplaceEmbeddedByPhysical<RechargeableDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, string.Format("..{0}AdorableDog.Rechargeable.Domain", Path.DirectorySeparatorChar)));
+                    options.FileSets.ReplaceEmbeddedByPhysical<RechargeableWebModule>(Path.Combine(hostingEnvironment.ContentRootPath));
+                });
+            }
+            else
+            {
+                Configure<VirtualFileSystemOptions>(options =>
+                {
+                    options.FileSets.AddEmbedded<RechargeableDomainModule>("Rechargeable");
+
+                });
+            }
+            Configure<VirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<RechargeableWebModule>("Rechargeable");
+            });
         }
 
         private void ConfigureLocalizationServices()
@@ -109,6 +138,14 @@ namespace AdorableDog.Rechargeable
                         typeof(AbpValidationResource),
                         typeof(AbpUiResource)
                     );
+
+                options.Resources
+                    .Get<AccountResource>()
+                    .AddBaseTypes(
+                        typeof(AbpValidationResource),
+                        typeof(AbpUiResource)
+                    ).AddVirtualJson("/Localization/Rechargeable")
+                    .DefaultCultureName = "zh-Hans";
 
                 options.Languages.Add(new LanguageInfo("en", "en", "English"));
                 options.Languages.Add(new LanguageInfo("pt-BR", "pt-BR", "Português"));
@@ -142,6 +179,15 @@ namespace AdorableDog.Rechargeable
                     options.DocInclusionPredicate((docName, description) => true);
                     options.CustomSchemaIds(type => type.FullName);
                 });
+        }
+
+        private void ConfigureTheme(IServiceCollection services)
+        {
+            services.Configure<ThemingOptions>(options =>
+            {
+                options.Themes.Add<Theme>();
+                options.DefaultThemeName = Theme.Name;
+            });
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

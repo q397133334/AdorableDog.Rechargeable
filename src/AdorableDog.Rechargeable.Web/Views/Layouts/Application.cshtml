@@ -1,0 +1,87 @@
+﻿@using Volo.Abp.AspNetCore.Mvc.AntiForgery
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Bundling
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.MainNavbar
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic.Themes.Basic.Components.PageAlerts
+@using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Components
+@inject IAbpAntiForgeryManager AbpAntiForgeryManager
+@inject IBrandingProvider BrandingProvider
+@{
+    Layout = null;
+    ViewBag.FluidLayout = true;
+    AbpAntiForgeryManager.SetCookie();
+    var containerClass = ViewBag.FluidLayout == true ? "container-fluid" : "container"; //TODO: Better and type-safe options
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>@(ViewBag.Title == null ? BrandingProvider.AppName : ViewBag.Title)</title>
+
+    @*<abp-style-bundle name="@BasicThemeBundles.Styles.Global" />*@
+    <link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.css?_v=636837231408330056" />
+    <link rel="stylesheet" type="text/css" href="/libs/font-awesome/css/font-awesome.css?_v=636837231408332374" />
+    <link rel="stylesheet" type="text/css" href="/libs/toastr/toastr.min.css?_v=636837231408377102" />
+    <link rel="stylesheet" type="text/css" href="/libs/select2/css/select2.min.css?_v=636837231408352105" />
+    <link rel="stylesheet" type="text/css" href="/libs/datatables.net-bs4/css/dataTables.bootstrap4.css?_v=636837231408330943" />
+    <link rel="stylesheet" type="text/css" href="/libs/abp/aspnetcore-mvc-ui-theme-shared/datatables/datatables-styles.css?_v=636827838460000000" />
+    <link rel="stylesheet" type="text/css" href="/themes/basic/layout.css?_v=636827838680000000" />
+
+
+    @RenderSection("styles", false)
+
+</head>
+<body class="abp-application-layout">
+
+    @(await Component.InvokeAsync<MainNavbarViewComponent>())
+
+    <div class="@containerClass">
+        @(await Component.InvokeAsync<PageAlertsViewComponent>())
+        @RenderBody()
+    </div>
+
+    @*<abp-script-bundle name="@BasicThemeBundles.Scripts.Global" />*@
+    <script src="/libs/abp/core/abp.js?_v=636837231408329204" type="text/javascript"></script>
+    <script src="/libs/jquery/jquery.js?_v=636837231408351214" type="text/javascript"></script>
+    <script src="/libs/abp/jquery/abp.jquery.js?_v=636837231408329534" type="text/javascript"></script>
+    <script src="/libs/bootstrap/js/bootstrap.bundle.js?_v=636837231408330403" type="text/javascript"></script>
+    <script src="/libs/lodash/lodash.min.js?_v=636837231408351615" type="text/javascript"></script>
+    <script src="/libs/jquery-validation/jquery.validate.js?_v=636837231408335017" type="text/javascript"></script>
+    <script src="/libs/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js?_v=636837231408334638" type="text/javascript"></script>
+    <script src="/libs/jquery-form/jquery.form.min.js?_v=636837231408334219" type="text/javascript"></script>
+    <script src="/libs/select2/js/select2.min.js?_v=636837231408362451" type="text/javascript"></script>
+    <script src="/libs/datatables.net/js/jquery.dataTables.js?_v=636837231408331834" type="text/javascript"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.js?_v=636837231408331317" type="text/javascript"></script>
+    <script src="/libs/sweetalert/sweetalert.min.js?_v=636837231408362807" type="text/javascript"></script>
+    <script src="/libs/toastr/toastr.min.js?_v=636837231408377272" type="text/javascript"></script>
+    <script src="/libs/timeago/jquery.timeago.js?_v=636837231408363128" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/jquery/jquery-extensions.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/jquery-form/jquery-form-extensions.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/bootstrap/dom-event-handlers.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/bootstrap/modal-manager.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/datatables/datatables-extensions.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/sweetalert/abp-sweetalert.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/libs/abp/aspnetcore-mvc-ui-theme-shared/toastr/abp-toastr.js?_v=636827838460000000" type="text/javascript"></script>
+    <script src="/Pages/Identity/Shared/change-password-modal.js?_v=636827846680000000" type="text/javascript"></script>
+    <script src="/Pages/Identity/Shared/personal-settings-modal.js?_v=636827846680000000" type="text/javascript"></script>
+    <script src="/libs/jquery-validation/localization/messages_zh.js?_v=636837231408347377" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        if (abp.utils.getCookieValue(".AspNetCore.Culture") == null) {
+            abp.utils.setCookieValue(".AspNetCore.Culture", "c=zh-Hans|uic=zh-Hans");
+            window.location.reload();
+        }
+    </script>
+
+    <script type="text/javascript" src="~/Abp/ApplicationConfigurationScript"></script>
+    <script type="text/javascript" src="~/Abp/ServiceProxyScript"></script>
+
+
+    @RenderSection("scripts", false)
+
+</body>
+</html>
