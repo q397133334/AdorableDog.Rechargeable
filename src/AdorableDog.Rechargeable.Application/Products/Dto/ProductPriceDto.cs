@@ -10,7 +10,7 @@ namespace AdorableDog.Rechargeable.Products.Dto
 
     [AutoMapTo(typeof(ProductPrice))]
     [AutoMapFrom(typeof(ProductPrice))]
-    public class ProductPriceDto : EntityDto
+    public class ProductPriceDto : EntityDto<Guid>
     {
         /// <summary>
         /// 金额

@@ -19,9 +19,9 @@ namespace AdorableDog.Rechargeable.Web.Pages.Machines
         [BindProperty(SupportsGet = true)]
         public Guid MachineId { get; set; }
 
-        private readonly MachineAppService _machineAppService;
+        private readonly IMachineAppService _machineAppService;
 
-        public RechargeModalModel(MachineAppService machineAppService)
+        public RechargeModalModel(IMachineAppService machineAppService)
         {
             _machineAppService = machineAppService;
         }
@@ -32,7 +32,6 @@ namespace AdorableDog.Rechargeable.Web.Pages.Machines
             MachineRechargeDto.MachineId = MachineId;
         }
 
-        [UnitOfWork]
         public async Task<IActionResult> OnPostAsync()
         {
             await _machineAppService.Recharge(MachineRechargeDto);

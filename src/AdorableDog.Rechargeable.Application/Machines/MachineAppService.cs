@@ -10,6 +10,7 @@ using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AdorableDog.Rechargeable.Machines
 {
@@ -35,7 +36,7 @@ namespace AdorableDog.Rechargeable.Machines
             _identityUserManager = identityUserManager;
             _signInManager = signInManager;
         }
-
+        //http://localhost:53929/api/app/machine/machineExpireTime?UserNameOrEmailAddress=fangang&Password=123qwe&DriveId=computerfgworker&ProductId=6973da64-642d-9b10-0acf-39ec738121de
         public async Task<int> GetMachineExpireTime(MachineExpireTimeDto inputDto)
         {
             var identityUser = await _identityUserManager.FindByNameAsync(inputDto.UserNameOrEmailAddress);
@@ -47,6 +48,7 @@ namespace AdorableDog.Rechargeable.Machines
                 if (machine == null)
                 {
                     machine = new Machine();
+                    machine.Name = inputDto.Name;
                     machine.ProductId = inputDto.ProductId;
                     machine.UserId = identityUser.Id;
                     machine.DriveId = inputDto.DriveId;
@@ -60,15 +62,21 @@ namespace AdorableDog.Rechargeable.Machines
                 }
                 else
                 {
+                    if (machine.Name != inputDto.Name)
+                    {
+                        machine.Name = inputDto.Name;
+                        machine.Desc = inputDto.Desc;
+                        await _repositoryMachines.UpdateAsync(machine);
+                    }
                     return (machine.ExpireTime - DateTime.Now).Days;
                 }
             }
             else
             {
-                return -1;
+                return -2;
             }
         }
-
+        [Authorize]
         public async Task<PagedResultDto<MachineDto>> GetMachines(PagedAndSortedResultRequestDto inputDto)
         {
             var machines = _repositoryMachines.Where(q => q.UserId == CurrentUser.Id).Skip(inputDto.SkipCount).Take(inputDto.MaxResultCount).ToList();
@@ -89,6 +97,7 @@ namespace AdorableDog.Rechargeable.Machines
             return new PagedResultDto<MachineDto>() { Items = query.ToList(), TotalCount = _repositoryMachines.Where(q => q.UserId == CurrentUser.Id).Count() };
         }
 
+        [Authorize]
         public async Task Recharge(MachineRechargeDto machineRechargeDto)
         {
             var machine = _repositoryMachines.Where(q => q.Id == machineRechargeDto.MachineId).FirstOrDefault();
@@ -105,11 +114,14 @@ namespace AdorableDog.Rechargeable.Machines
             serialNumber.UseTime = DateTime.Now;
             serialNumber.BuyUserId = CurrentUser.Id ?? new Guid();
             serialNumber.MachineId = machine.Id;
-
+            if(machine.ExpireTime<DateTime.Now)
+            {
+                machine.ExpireTime = DateTime.Now;
+            }
             machine.ExpireTime = machine.ExpireTime.AddDays(serialNumber.Expire);
             machine.MachineRecords.Add(new MachineRecord()
             {
-                MachineId=machine.Id,
+                MachineId = machine.Id,
                 Desc = $"{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}使用【{machineRechargeDto.SerialNumberId}】序列号进行充值，增加时间【{serialNumber.Expire}】天,有效期到：{ machine.ExpireTime.ToString("yyyy-MM-dd ")}",
             });
 

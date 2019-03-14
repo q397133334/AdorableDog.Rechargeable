@@ -133,6 +133,8 @@ namespace AdorableDog.Rechargeable.Migrations
 
                     b.Property<Guid>("BuyUserId");
 
+                    b.Property<string>("CreateDesc");
+
                     b.Property<int>("Expire");
 
                     b.Property<Guid?>("MachineId");

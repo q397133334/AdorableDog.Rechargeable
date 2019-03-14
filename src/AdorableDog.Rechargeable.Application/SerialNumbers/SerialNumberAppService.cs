@@ -30,7 +30,7 @@ namespace AdorableDog.Rechargeable.SerialNumbers
             _repositoryProductPrices = repositoryProductPrices;
         }//
 
-
+        [Authorize]
         public async Task Create(CreateSerialNumberDto inputDto)
         {
             var serialNumber = ObjectMapper.Map<CreateSerialNumberDto, SerialNumber>(inputDto);
@@ -46,7 +46,7 @@ namespace AdorableDog.Rechargeable.SerialNumbers
             serialNumber.SaleUserId = CurrentUser.Id;
             serialNumber.Expire = productPrice.Day;
             serialNumber.UseTime = null;
-
+            serialNumber.CreateDesc = $"{CurrentUser.UserName}通过后台创建,{DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}";
             await _repositorySerialNumbers.InsertAsync(serialNumber);
 
         }

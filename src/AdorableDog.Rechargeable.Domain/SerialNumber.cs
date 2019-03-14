@@ -60,5 +60,7 @@ namespace AdorableDog.Rechargeable
         /// </summary>
         [Display(Name = "使用时间")]
         public DateTime? UseTime { get; set; }
+
+        public string CreateDesc { get; set; }
     }
 }
