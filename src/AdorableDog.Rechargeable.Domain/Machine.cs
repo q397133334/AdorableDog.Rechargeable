@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace AdorableDog.Rechargeable
 {
@@ -11,7 +13,7 @@ namespace AdorableDog.Rechargeable
     /// 机器信息
     /// </summary>
     [Table("Machines")]
-    public class Machine : Entity<Guid>
+    public class Machine : FullAuditedEntity<Guid>
     {
         public Machine()
         {
@@ -47,6 +49,10 @@ namespace AdorableDog.Rechargeable
         /// </summary>
         [Display(Name = "最后一次在线时间")]
         public DateTime LastOnlineTime { get; set; }
+
+        [Display(Name = "自动续费")]
+        [DefaultValue(true)]
+        public bool AutoRecharge { get; set; } = true;
 
         /// <summary>
         /// 所属用户

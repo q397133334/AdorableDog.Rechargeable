@@ -4,14 +4,16 @@ using AdorableDog.Rechargeable.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdorableDog.Rechargeable.Migrations
 {
     [DbContext(typeof(RechargeableDbContext))]
-    partial class RechargeableDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190401025851_update_table_machine_add_col_autorecharge")]
+    partial class update_table_machine_add_col_autorecharge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,34 +28,11 @@ namespace AdorableDog.Rechargeable.Migrations
 
                     b.Property<bool>("AutoRecharge");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<string>("Desc");
 
                     b.Property<string>("DriveId");
 
                     b.Property<DateTime>("ExpireTime");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("IsDeleted")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<DateTime>("LastOnlineTime");
 
@@ -160,32 +139,7 @@ namespace AdorableDog.Rechargeable.Migrations
 
                     b.Property<string>("CreateDesc");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<int>("Expire");
-
-                    b.Property<DateTime?>("ExpireTime");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("IsDeleted")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<Guid?>("MachineId");
 

@@ -1,0 +1,33 @@
+﻿@page
+@inherits AdorableDog.Rechargeable.Pages.RechargeablePageBase
+@using AdorableDog.Rechargeable.Web.Pages.Machines
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@model RechargesModalModel
+@{
+    Layout = null;
+}
+<form method="post" novalidate="novalidate" model="Body" data-ajaxForm="true" action="/Machines/RechargesModal">
+    @Html.AntiForgeryToken()
+        <abp-modal>
+            <abp-modal-header title="充值"></abp-modal-header>
+            <abp-modal-body>
+                <div class="form-group">
+                    <label for="Body_Guids">序列号(请用,分隔开)</label><span> * </span>
+                    <textarea data-val="true" data-val-required="字段序列号(请用,分隔开)不可为空." id="Body_Guids" name="Body.Guids" class="form-control " rows="20"></textarea>
+                    <span class="text-danger field-validation-valid" data-valmsg-for="Body.Guids" data-valmsg-replace="true"></span>
+                </div>
+            </abp-modal-body>
+            <abp-modal-footer>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary" data-busy-text="保存中..."><i class="fa fa-check"></i> <span>保存1</span></button>
+            </abp-modal-footer>
+        </abp-modal>
+        <script type="text/javascript">
+            $("#MachineRechargeDto_SerialNumberId").val("");
+            setTimeout(function () {
+                $("#MachineRechargeDto_SerialNumberId").focus();
+            }, 1000)
+        </script>
+</form>
+
+

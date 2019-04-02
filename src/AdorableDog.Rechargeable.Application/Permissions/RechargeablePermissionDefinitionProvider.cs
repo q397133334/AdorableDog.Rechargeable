@@ -12,6 +12,7 @@ namespace AdorableDog.Rechargeable.Permissions
 
             //Define your own permissions here. Examaple:
             //myGroup.AddPermission(RechargeablePermissions.MyPermission1, L("Permission:MyPermission1"));
+            myGroup.AddPermission(RechargeablePermissions.ShowAllMachine, L("Permission:ShowAllMachine"));
         }
 
         private static LocalizableString L(string name)

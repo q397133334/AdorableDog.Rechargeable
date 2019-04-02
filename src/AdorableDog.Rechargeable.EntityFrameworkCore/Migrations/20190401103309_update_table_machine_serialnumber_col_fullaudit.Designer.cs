@@ -4,14 +4,16 @@ using AdorableDog.Rechargeable.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdorableDog.Rechargeable.Migrations
 {
     [DbContext(typeof(RechargeableDbContext))]
-    partial class RechargeableDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190401103309_update_table_machine_serialnumber_col_fullaudit")]
+    partial class update_table_machine_serialnumber_col_fullaudit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

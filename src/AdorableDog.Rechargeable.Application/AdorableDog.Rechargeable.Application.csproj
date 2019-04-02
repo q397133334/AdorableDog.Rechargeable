@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Machines\Dto\MachinePagedAndSortedResultRequestDto.cs~RF2511a3a8.TMP" />
     <None Remove="Machines\IMachineAppService.cs~RF5e7776c.TMP" />
     <None Remove="Products\IProductAppService.cs~RF5ac099e.TMP" />
   </ItemGroup>

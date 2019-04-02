@@ -31,6 +31,6 @@ namespace AdorableDog.Rechargeable.Products.Dto
         /// <summary>
         /// 所属用户
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid? UserId { get; set; }
     }
 }

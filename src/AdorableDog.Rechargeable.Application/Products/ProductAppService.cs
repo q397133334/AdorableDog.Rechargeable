@@ -32,6 +32,14 @@ namespace AdorableDog.Rechargeable.Products
             _repositorySerialNumbers = repositorySerialNumbers;
         }
 
+        [Authorize]
+        public async override Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
+        {
+            input.UserId = CurrentUser.Id.Value;
+            return await base.CreateAsync(input);
+        }
+
+        [Authorize]
         public async override Task<PagedResultDto<ProductDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
             var query = _repositoryProduct.Where(q => q.UserId == CurrentUser.Id);

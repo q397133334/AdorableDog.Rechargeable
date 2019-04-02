@@ -8,6 +8,7 @@
     "Register": "注册",
     "Cancel": "取消",
     "Machines": "机器列表",
-    "Machine:DriveId":"编号" 
+    "Machine:DriveId": "编号",
+    "Permission:ShowAllMachine": "查看所有机器"
   }
 }

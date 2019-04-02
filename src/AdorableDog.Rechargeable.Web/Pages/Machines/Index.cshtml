@@ -6,12 +6,31 @@
         <h2>@L["Machines"]</h2>
     </abp-card-header>
     <abp-card-body>
+        <form class="form-inline">
+            <button type="button" id="btnReachines" class="btn btn-primary  mb-2"><i class="fa fa-paypal"></i>&nbsp;批量充</button>
+            <div class="form-group">
+                <label for="Products" class="mx-sm-3 mb-2">辅助</label>
+                <select id="Products" name="Products" class="form-control">
+                    @{
+                        foreach (var item in Model.Products)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="machineName" class="mx-sm-3 mb-2">关键词</label>
+                <input type="text" class="form-control" id="key" name="key" placeholder="输入名称、编号进行查询" />
+            </div>
+            <button type="button" id="btnSearch" class="btn btn-primary ml-2"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</button>
+        </form>
         <abp-table striped-rows="true" id="MachinesTable">
             <thead>
                 <tr>
 
                     <th>@L["名称"]</th>
-                    <th>产品信息</th>
+                    <th>辅助</th>
                     <th>@L["Machine:DriveId"]</th>
                     <th>@L["信息"]</th>
                     <th>@L["在线时间"]</th>
@@ -27,9 +46,10 @@
         $(function () {
 
             var rechargeModal = new abp.ModalManager(abp.appPath + 'Machines/RechargeModal');
+            var rechargesModal = new abp.ModalManager(abp.appPath + 'Machines/RechargesModal');
 
             var dataTable = $('#MachinesTable').DataTable(abp.libs.datatables.normalizeConfiguration({
-                ajax: abp.libs.datatables.createAjax(adorableDog.rechargeable.machines.machine.getMachines),
+                ajax: abp.libs.datatables.createAjax(adorableDog.rechargeable.machines.machine.getMachines,inputAction),
                 processing: true,
                 serverSide: true,
                 paging: true,
@@ -39,7 +59,7 @@
                 order: [[1, "asc"]],
                 columnDefs: [
                     { data: "name" },
-                    { data:"productName"},
+                    { data: "productName" },
                     { data: "driveId" },
                     { data: "desc" },
                     { data: "lastOnlineTime" },
@@ -53,17 +73,67 @@
                                         action: function (data) {
                                             rechargeModal.open({ MachineId: data.record.id });
                                         }
+                                    },
+                                    {
+                                        text: "删除",
+                                        action: function (data) {
+                                            abp.message.confirm("确定要删除吗？", function () {
+                                                adorableDog.rechargeable.machines.machine.delete(data.record.id)
+                                                dataTable.ajax.reload();
+                                            })
+                                        }
+                                    },
+                                    {
+                                        text: "解绑",
+                                        action: function (data) {
+                                            abp.message.confirm("确定要解绑吗？", function () {
+                                                adorableDog.rechargeable.machines.machine.relieve(data.record.id, {
+                                                    success: function (data) {
+                                                        abp.message.success(data,"新的序列号")
+                                                    }
+                                                });
+                                                dataTable.ajax.reload();
+                                            })
+                                        }
                                     }
                                 ]
                         }
-                    
+
                     }
                 ]
             }));
 
+            $("#btnReachines").on("click", function () {
+                rechargesModal.open();
+
+
+                var t = setInterval(function () {
+                    var $form = rechargesModal.getForm()
+                    if ($form != null) {
+                        $form.on('abp-ajax-success',
+                            function (event,data) {
+                                abp.message.info(data.responseText, "操作提示");
+                            });
+                        clearInterval(t);
+                    }
+
+                }, 100)
+
+
+            });
+            $("#btnSearch").on("click", function () {
+                dataTable.ajax.reload();
+            });
             rechargeModal.onResult(function () {
                 dataTable.ajax.reload();
             });
         });
+
+        function inputAction() {
+            return {
+                productId: $("#Products").val(),
+                key: $("#key").val()
+            }
+        }
     </script>
 }

@@ -7,6 +7,7 @@
     "Login": "µÇÂ½",
     "Register": "×¢²á",
     "Cancel": "È¡Ïû",
-    "Machines": "Machines"
+    "Machines": "Machines",
+    "Permission:ShowAllMachine": "ShowAllMachine"
   }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace AdorableDog.Rechargeable
 {
@@ -11,7 +12,7 @@ namespace AdorableDog.Rechargeable
     /// 序列号信息
     /// </summary>
     [Table("SerialNumbers")]
-    public class SerialNumber : Entity<Guid>
+    public class SerialNumber : FullAuditedEntity<Guid>
     {
         /// <summary>
         /// 订单ID
@@ -54,6 +55,9 @@ namespace AdorableDog.Rechargeable
         /// </summary>
         [Display(Name = "有效时间")]
         public int Expire { get; set; }
+
+        [Display(Name = "有效时间")]
+        public DateTime? ExpireTime { get; set; }
 
         /// <summary>
         /// 使用时间
